@@ -33,11 +33,21 @@ app.use(
 		credentials: true,
 	})
 );
+// app.use(
+// 	fileUpload({
+// 		useTempFiles: true,
+// 		tempFileDir: "/tmp/",
+// 	})
+// );
 app.use(
-	fileUpload({
-		useTempFiles: true,
-		tempFileDir: "/tmp/",
-	})
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://study-notion-117t.vercel.app",
+      "https://study-notion-117t.vercel.app/",
+    ],
+    credentials: true,
+  })
 );
 
 // Connecting to cloudinary
