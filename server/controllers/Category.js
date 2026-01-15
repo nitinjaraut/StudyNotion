@@ -51,15 +51,14 @@ exports.createCategory = async (req, res) => {
 // };
 exports.showAllCategories = async (req, res) => {
   try {
-    console.log("INSIDE SHOW ALL CATEGORIES");
     const categories = await Category.find({}).lean()
 
     return res.status(200).json({
       success: true,
-      data: categories || [],
+      data: categories,
     })
   } catch (error) {
-    console.error("SHOW ALL CATEGORIES ERROR:", error)
+    console.error("showAllCategories error:", error)
     return res.status(500).json({
       success: false,
       message: "Failed to fetch categories",
