@@ -34,21 +34,38 @@ exports.createCategory = async (req, res) => {
 
 
 // get All the tags
+// exports.showAllCategories = async (req, res) => {
+// 	try {
+//       console.log("INSIDE SHOW ALL CATEGORIES");
+// 		  const allCategorys = await Category.find()
+// 		  res.status(200).json({
+// 			  success: true,
+// 			  data: allCategorys,
+// 		  });
+// 	} catch (error) {
+// 		return res.status(500).json({
+// 			success: false,
+// 			message: error.message,
+// 		});
+// 	}
+// };
 exports.showAllCategories = async (req, res) => {
-	try {
-      console.log("INSIDE SHOW ALL CATEGORIES");
-		  const allCategorys = await Category.find()
-		  res.status(200).json({
-			  success: true,
-			  data: allCategorys,
-		  });
-	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		});
-	}
-};
+  try {
+    console.log("INSIDE SHOW ALL CATEGORIES");
+    const categories = await Category.find({}).lean()
+
+    return res.status(200).json({
+      success: true,
+      data: categories || [],
+    })
+  } catch (error) {
+    console.error("SHOW ALL CATEGORIES ERROR:", error)
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch categories",
+    })
+  }
+}
 //categoryPageDetails 
 exports.categoryPageDetails = async (req, res) => {
   try {

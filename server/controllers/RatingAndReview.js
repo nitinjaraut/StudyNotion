@@ -107,30 +107,64 @@ exports.getAverageRating = async (req, res) => {
 }
 
 // Get all rating and reviews
+// exports.getAllRatingReview = async (req, res) => {
+//   try {
+//     const allReviews = await RatingAndReview.find({})
+//       .sort({ rating: "desc" })
+//       .populate({
+//         path: "user",
+//         select: "firstName lastName email image", // Specify the fields you want to populate from the "Profile" model
+//       })
+//       .populate({
+//         path: "course",
+//         select: "courseName", //Specify the fields you want to populate from the "Course" model
+//       })
+//       .exec()
+
+//     res.status(200).json({
+//       success: true,
+//       data: allReviews,
+//     })
+//   } catch (error) {
+//     console.error(error)
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to retrieve the rating and review for the course",
+//       error: error.message,
+//     })
+//   }
+// }
+
 exports.getAllRatingReview = async (req, res) => {
   try {
     const allReviews = await RatingAndReview.find({})
-      .sort({ rating: "desc" })
+      .sort({ rating: -1 })
       .populate({
         path: "user",
-        select: "firstName lastName email image", // Specify the fields you want to populate from the "Profile" model
+        select: "firstName lastName image",
+        match: { _id: { $exists: true } },
       })
       .populate({
         path: "course",
-        select: "courseName", //Specify the fields you want to populate from the "Course" model
+        select: "courseName",
+        match: { _id: { $exists: true } },
       })
-      .exec()
+      .lean()
 
-    res.status(200).json({
+    // remove broken references
+    const filteredReviews = allReviews.filter(
+      (r) => r.user && r.course
+    )
+
+    return res.status(200).json({
       success: true,
-      data: allReviews,
+      data: filteredReviews,
     })
   } catch (error) {
-    console.error(error)
+    console.error("GET REVIEWS ERROR:", error)
     return res.status(500).json({
       success: false,
-      message: "Failed to retrieve the rating and review for the course",
-      error: error.message,
+      message: "Failed to fetch reviews",
     })
   }
 }
