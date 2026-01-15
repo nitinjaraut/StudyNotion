@@ -51,20 +51,20 @@ exports.createCategory = async (req, res) => {
 // };
 exports.showAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find({}).lean()
+    const categories = await Category.find({}).lean();
 
     return res.status(200).json({
       success: true,
       data: categories,
-    })
+    });
   } catch (error) {
-    console.error("showAllCategories error:", error)
+    console.error("showAllCategories error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch categories",
-    })
+    });
   }
-}
+};
 //categoryPageDetails 
 exports.categoryPageDetails = async (req, res) => {
   try {

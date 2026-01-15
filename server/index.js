@@ -44,12 +44,11 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://study-notion-117t.vercel.app",
-      "https://study-notion-117t.vercel.app/",
     ],
     credentials: true,
   })
 );
-
+app.options("*", cors());
 // Connecting to cloudinary
 cloudinaryConnect();
 
