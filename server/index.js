@@ -44,10 +44,14 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://study-notion-117t.vercel.app",
+      "https://study-notion-117t-9c2neig9p-nitin-jarauts-projects.vercel.app",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.options("*", cors());
 // Connecting to cloudinary
 cloudinaryConnect();
