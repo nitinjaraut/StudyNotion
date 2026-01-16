@@ -33,13 +33,27 @@ app.use(cookieParser());
 // 		tempFileDir: "/tmp/",
 // 	})
 // );
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://study-notion-117t.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://study-notion-117t.vercel.app",
-      "https://study-notion-117t-9c2neig9p-nitin-jarauts-projects.vercel.app",
-    ],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // allow localhost + ANY vercel preview
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
