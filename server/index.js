@@ -27,35 +27,22 @@ database.connect();
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://study-notion-117t.vercel.app",
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.endsWith(".vercel.app")
-    ) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
+app.use(
+	cors({
+		origin: "*",
+		credentials: true,
+	})
+);
+app.use(
+	fileUpload({
+		useTempFiles: true,
+		tempFileDir: "/tmp/",
+	})
+);
 // Connecting to cloudinary
 cloudinaryConnect();
 
-// Setting up routes
+// Setting up routesa
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
