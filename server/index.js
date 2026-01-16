@@ -9,75 +9,74 @@ const contactUsRoute = require("./routes/Contact");
 
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const {cloudinaryConnect } = require("./config/couldinary");
+const cors = require("cors"); // ✅ ONLY ONCE
+const { cloudinaryConnect } = require("./config/couldinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
 dotenv.config();
-// Setting up port number
+
+// ---------------- PORT ----------------
 const PORT = process.env.PORT || 4000;
 
-// Loading environment variables from .env file
-dotenv.config();
-
-// Connecting to database
+// ---------------- DATABASE ----------------
 database.connect();
- 
-// Middlewares
+
+// ---------------- MIDDLEWARES ----------------
 app.use(express.json());
 app.use(cookieParser());
-const cors = require("cors");
 
+// ✅ CORS CONFIG (credentials-safe)
 const allowedOrigins = [
   "http://localhost:3000",
   "https://study-notion-117t.vercel.app",
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // Postman / server-to-server
-
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.endsWith(".vercel.app")
-    ) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
 app.use(
-	fileUpload({
-		useTempFiles: true,
-		tempFileDir: "/tmp/",
-	})
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman / server-side
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
 );
-// Connecting to cloudinary
+
+// ---------------- FILE UPLOAD ----------------
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+
+// ---------------- CLOUDINARY ----------------
 cloudinaryConnect();
 
-// Setting up routesa
+// ---------------- ROUTES ----------------
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
-// Testing the server
+// ---------------- HEALTH CHECK ----------------
 app.get("/", (req, res) => {
-	return res.json({
-		success: true,
-		message: "Your server is up and running ...",
-	});
+  res.json({
+    success: true,
+    message: "Your server is up and running ...",
+  });
 });
 
-// Listening to the server
+// ---------------- START SERVER ----------------
 app.listen(PORT, () => {
-	console.log(`App is listening at ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
-// End of code.
