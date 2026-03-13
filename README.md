@@ -1,31 +1,63 @@
-# React & Tailwind CSS Starter Pack
+# StudyNotion
 
-This is a starter pack for creating React projects with Tailwind CSS configured. It uses React version **18.2** and Tailwind CSS version **3.2**.
+A full-stack EdTech platform where instructors can create and sell courses while students can browse, purchase, enroll, track progress, and review courses.
 
-## Usage
+Features:
+- Role-based authentication for Students and Instructors
+- Secure login using JWT authentication and Bcrypt password hashing
+- OTP verification and password recovery functionality
+- Instructors can create, update, and manage courses
+- Instructor dashboard showing course analytics (students enrolled, courses created, revenue insights)
+- Students can purchase and enroll in courses
+- Course progress tracking for enrolled students
+- Course ratings and reviews system
+- Wishlist and cart checkout functionality
+- Razorpay payment gateway integration for secure course purchases
+- Cloudinary media storage for course videos and images
+- Course content stored and rendered using Markdown
 
-This starter pack includes a basic setup for using **Tailwind CSS with React**. To start building your own components and styles, follow these steps:
+Tech Stack:
 
-1. Clone the repository to your local machine.
-    ```sh
-    git clone https://github.com/thepranaygupta/react-tailwind-css-starter-pack.git
-    ```
+Frontend:
+- React.js
+- HTML
+- CSS
+- JavaScript
 
-1. Install the required packages.
-    ```sh
-    cd react-tailwind-css-starter-pack
-    npm install
-    ```
+Backend:
+- Node.js
+- Express.js
 
-1. Start the development server.
-    ```sh
-    npm start
-    ```
-1. Open the project in your browser at [`http://localhost:3000`](http://localhost:3000) to view your project.
-1. Create your React components and add your styles using Tailwind classes. You can also create new CSS files and import them into your components.
+Database:
+- MongoDB
+- Mongoose
 
-The project is set up to use `postcss-cli` to process your CSS files. You can add your own `tailwind.config.js` file to customize your Tailwind setup.
+Authentication & Security:
+- JWT (JSON Web Tokens)
+- Bcrypt
 
-## Contributing
+Integrations:
+- Razorpay (Payment Gateway)
+- Cloudinary (Media Storage)
 
-Contributions are welcome! If you have any suggestions or find any issues, please feel free to open an issue or a pull request.
+Architecture:
+
+StudyNotion follows a monolithic architecture where all modules are part of a single backend application.
+
+The backend is built using Node.js and Express.js, while MongoDB is used for data storage.
+The frontend communicates with backend APIs to fetch and manage course, user, and payment data.
+
+Main Modules:
+
+Student Features:
+- Browse available courses
+- Add courses to wishlist
+- Purchase courses through Razorpay
+- Track course progress
+- Leave ratings and reviews
+
+Instructor Features:
+- Create and manage courses
+- Upload course media
+- View course analytics and statistics
+- Track enrolled students and revenue
