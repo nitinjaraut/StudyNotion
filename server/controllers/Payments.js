@@ -192,7 +192,7 @@ const enrollStudents = async (courses, userId) => {
         courses: courseId,
         courseProgress: courseProgress._id,
       },
-    })
+    }) 
 
     await mailSender(
       enrolledCourse.instructor.email,

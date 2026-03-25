@@ -23,6 +23,7 @@ function loadScript(src) {
       resolve(false)
     }
     document.body.appendChild(script)
+    // Script is inserted into DOM  → browser loads it
   })
 }
 
@@ -56,14 +57,12 @@ export async function BuyCourse(
     if (!orderResponse.data.success) {
       throw new Error(orderResponse.data.message)
     }
+    // const RAZORPAY_TEST_KEY = "rzp_test_S25I3ASZP06v49"
 
-    // 🔥 HARD-CODED KEY (TEST ONLY)
-    const RAZORPAY_TEST_KEY = "rzp_test_S25I3ASZP06v49"
-
-    console.log("RAZORPAY HARDCODED KEY:", RAZORPAY_TEST_KEY)
+    console.log("RAZORPAY  KEY:", process.env.REACT_APP_RAZORPAY_KEY)
 
     const options = {
-      key: RAZORPAY_TEST_KEY,
+      key: process.env.REACT_APP_RAZORPAY_KEY,
       amount: orderResponse.data.data.amount,
       currency: orderResponse.data.data.currency,
       order_id: orderResponse.data.data.id,

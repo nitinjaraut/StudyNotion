@@ -29,9 +29,9 @@ const About = () => {
           </header>
           <div className="sm:h-[70px] lg:h-[150px]"></div>
           <div className="absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5">
-            <img src={BannerImage1} alt="" />
-            <img src={BannerImage2} alt="" />
-            <img src={BannerImage3} alt="" />
+            <img src={BannerImage1} alt="student1" />
+            <img src={BannerImage2} alt="student2" />
+            <img src={BannerImage3} alt="student3" />
           </div>
         </div>
       </section>

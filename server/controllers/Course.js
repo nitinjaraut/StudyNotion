@@ -493,7 +493,7 @@ exports.createCourse = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "All fields are mandatory",
-      })
+      }) 
     }
 
     const instructorDetails = await User.findOne({
@@ -696,6 +696,7 @@ exports.getAllCourses = async (req, res) => {
 //     })
 //   }
 // }
+// get course details only showes subsection without video url for non logged in user
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body
@@ -737,6 +738,7 @@ exports.getCourseDetails = async (req, res) => {
     })
   }
 }
+// get full course deltails including video and progress url for logged in user
 exports.getFullCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body
@@ -831,7 +833,7 @@ exports.deleteCourse = async (req, res) => {
       })
     }
 
-    // ✅ FIX 1: correct field name
+    // FIX 1: correct field name
     const studentsEnrolled = course.studentsEnrolled || []
 
     for (const studentId of studentsEnrolled) {
@@ -840,7 +842,7 @@ exports.deleteCourse = async (req, res) => {
       })
     }
 
-    // ✅ Delete sections & subsections safely
+    // Delete sections & subsections safely
     for (const sectionId of course.courseContent) {
       const section = await Section.findById(sectionId)
 
@@ -853,13 +855,18 @@ exports.deleteCourse = async (req, res) => {
       await Section.findByIdAndDelete(sectionId)
     }
 
-    // ✅ Remove from category
+    //  Remove from category
     await Category.findByIdAndUpdate(course.category, {
       $pull: { courses: courseId },
     })
 
-    // ✅ Delete course
+    //  Delete course
     await Course.findByIdAndDelete(courseId)
+
+    // removing course from instructor 
+    await User.findByIdAndUpdate(course.instructor, {
+      $pull: { courses: courseId },
+    })
 
     return res.status(200).json({
       success: true,
