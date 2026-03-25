@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
 import ReactMarkdown from "react-markdown"
@@ -281,8 +281,11 @@ function CourseDetails() {
   const [avgReviewCount, setAvgReviewCount] = useState(0)
   const [isActive, setIsActive] = useState([])
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
+  const fetchCalledRef = useRef(false)
 
   useEffect(() => {
+    if (fetchCalledRef.current) return
+    fetchCalledRef.current = true
     ;(async () => {
       try {
         const res = await fetchCourseDetails(courseId)
@@ -291,6 +294,10 @@ function CourseDetails() {
         console.error("Failed to fetch course details")
       }
     })()
+
+    return () => {
+      fetchCalledRef.current = false
+    }
   }, [courseId])
 
   useEffect(() => {
