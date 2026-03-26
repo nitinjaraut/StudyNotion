@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { toast } from "react-hot-toast"
 
 import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI"
 import { getInstructorData } from "../../../services/operations/profileAPI"
@@ -16,8 +17,12 @@ export default function Instructor() {
   useEffect(() => {
     ;(async () => {
       setLoading(true)
-      const instructorApiData = await getInstructorData(token)
-      const result = await fetchInstructorCourses(token)
+      const p1 = getInstructorData(token)
+      const p2 = fetchInstructorCourses(token)
+      // Dismiss API-level toasts — this component uses its own spinner
+      toast.dismiss("get-instructor-data")
+      toast.dismiss("fetch-instructor-courses")
+      const [instructorApiData, result] = await Promise.all([p1, p2])
       console.log(instructorApiData)
       if (instructorApiData.length) setInstructorData(instructorApiData)
       if (result) {
