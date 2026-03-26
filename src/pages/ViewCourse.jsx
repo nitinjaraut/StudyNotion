@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Outlet, useParams } from "react-router-dom"
 
@@ -17,11 +17,8 @@ export default function ViewCourse() {
   const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const [reviewModal, setReviewModal] = useState(false)
-  const fetchCalledRef = useRef(false)
 
   useEffect(() => {
-    if (fetchCalledRef.current) return
-    fetchCalledRef.current = true
     ;(async () => {
       const courseData = await getFullDetailsOfCourse(courseId, token)
       // console.log("Course Data here... ", courseData.courseDetails)

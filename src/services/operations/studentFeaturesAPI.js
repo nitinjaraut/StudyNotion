@@ -35,7 +35,7 @@ export async function BuyCourse(
   navigate,
   dispatch
 ) {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Loading...", { id: "buy-course" })
 
   try {
     const loaded = await loadScript(
@@ -100,7 +100,7 @@ export async function BuyCourse(
 // VERIFY PAYMENT
 // ================================
 async function verifyPayment(bodyData, token, navigate, dispatch) {
-  const toastId = toast.loading("Verifying payment...")
+  const toastId = toast.loading("Verifying payment...", { id: "verify-payment" })
   dispatch(setPaymentLoading(true))
 
   try {

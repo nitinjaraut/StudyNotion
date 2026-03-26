@@ -1,41 +1,69 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-hot-toast"
 
+// Helper to get the current user's ID from localStorage
+function getCurrentUserId() {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"))
+    return user?._id || null
+  } catch {
+    return null
+  }
+}
+
+// Helper to get user-specific cart data from localStorage
+function getUserCart(userId) {
+  if (!userId) return { cart: [], total: 0, totalItems: 0 }
+  try {
+    const cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || []
+    const total = JSON.parse(localStorage.getItem(`total_${userId}`)) || 0
+    const totalItems = JSON.parse(localStorage.getItem(`totalItems_${userId}`)) || 0
+    return { cart, total, totalItems }
+  } catch {
+    return { cart: [], total: 0, totalItems: 0 }
+  }
+}
+
+// Helper to save user-specific cart data to localStorage
+function saveUserCart(userId, state) {
+  if (!userId) return
+  localStorage.setItem(`cart_${userId}`, JSON.stringify(state.cart))
+  localStorage.setItem(`total_${userId}`, JSON.stringify(state.total))
+  localStorage.setItem(`totalItems_${userId}`, JSON.stringify(state.totalItems))
+}
+
 const initialState = {
-  cart: localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart"))
-    : [],
-  total: localStorage.getItem("total")
-    ? JSON.parse(localStorage.getItem("total"))
-    : 0,
-  totalItems: localStorage.getItem("totalItems")
-    ? JSON.parse(localStorage.getItem("totalItems"))
-    : 0,
+  cart: [],
+  total: 0,
+  totalItems: 0,
 }
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    // Called on login to load the user's saved cart
+    loadCart: (state, action) => {
+      const userId = action.payload
+      const saved = getUserCart(userId)
+      state.cart = saved.cart
+      state.total = saved.total
+      state.totalItems = saved.totalItems
+    },
     addToCart: (state, action) => {
       const course = action.payload
       const index = state.cart.findIndex((item) => item._id === course._id)
 
       if (index >= 0) {
-        // If the course is already in the cart, do not modify the quantity
         toast.error("Course already in cart")
         return
       }
-      // If the course is not in the cart, add it to the cart
       state.cart.push(course)
-      // Update the total quantity and price
       state.totalItems++
       state.total += course.price
-      // Update to localstorage
-      localStorage.setItem("cart", JSON.stringify(state.cart))
-      localStorage.setItem("total", JSON.stringify(state.total))
-      localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
-      // show toast
+      // Save to user-specific localStorage
+      const userId = getCurrentUserId()
+      saveUserCart(userId, state)
       toast.success("Course added to cart")
     },
     removeFromCart: (state, action) => {
@@ -43,15 +71,12 @@ const cartSlice = createSlice({
       const index = state.cart.findIndex((item) => item._id === courseId)
 
       if (index >= 0) {
-        // If the course is found in the cart, remove it
         state.totalItems--
         state.total -= state.cart[index].price
         state.cart.splice(index, 1)
-        // Update to localstorage
-        localStorage.setItem("cart", JSON.stringify(state.cart))
-        localStorage.setItem("total", JSON.stringify(state.total))
-        localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
-        // show toast
+        // Save to user-specific localStorage
+        const userId = getCurrentUserId()
+        saveUserCart(userId, state)
         toast.success("Course removed from cart")
       }
     },
@@ -59,14 +84,12 @@ const cartSlice = createSlice({
       state.cart = []
       state.total = 0
       state.totalItems = 0
-      // Update to localstorage
-      localStorage.removeItem("cart")
-      localStorage.removeItem("total")
-      localStorage.removeItem("totalItems")
+      // Note: We do NOT remove from localStorage here
+      // so the cart persists for the next login
     },
   },
 })
 
-export const { addToCart, removeFromCart, resetCart } = cartSlice.actions
+export const { addToCart, removeFromCart, resetCart, loadCart } = cartSlice.actions
 
 export default cartSlice.reducer

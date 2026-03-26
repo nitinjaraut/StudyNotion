@@ -13,7 +13,7 @@ const {
 
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "get-user-details" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("GET", GET_USER_DETAILS_API, null, {
@@ -40,7 +40,7 @@ export function getUserDetails(token, navigate) {
 }
 
 export async function getUserEnrolledCourses(token) {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Loading...", { id: "get-enrolled-courses" })
   let result = []
   try {
     const response = await apiconnector(
@@ -69,7 +69,7 @@ export async function getUserEnrolledCourses(token) {
 }
 
 export async function getInstructorData(token) {
-  const toastId = toast.loading("Loading...")
+  const toastId = toast.loading("Loading...", { id: "get-instructor-data" })
   let result = []
   try {
     const response = await apiconnector("GET", GET_INSTRUCTOR_DATA_API, null, {

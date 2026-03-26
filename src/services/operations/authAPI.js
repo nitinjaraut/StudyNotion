@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast"
 
 import { setLoading, setToken } from "../../slices/authSlice"
-import { resetCart } from "../../slices/cartSlice"
+import { loadCart, resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 import { apiconnector } from "../apiconnector"
 import { endpoints } from "../apis"
@@ -16,7 +16,7 @@ const {
 
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "send-otp" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("POST", SENDOTP_API, {
@@ -53,7 +53,7 @@ export function signUp(
   navigate
 ) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "signup" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("POST", SIGNUP_API, {
@@ -85,7 +85,7 @@ export function signUp(
 
 export function login(email, password, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "login" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("POST", LOGIN_API, {
@@ -116,6 +116,9 @@ export function login(email, password, navigate) {
       localStorage.setItem("token", JSON.stringify(token))
       localStorage.setItem("user", JSON.stringify(userData))
 
+      // Restore user's cart from localStorage
+      dispatch(loadCart(user._id))
+
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
@@ -128,7 +131,7 @@ export function login(email, password, navigate) {
 
 export function getPasswordResetToken(email, setEmailSent) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "reset-pass-token" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("POST", RESETPASSTOKEN_API, {
@@ -154,7 +157,7 @@ export function getPasswordResetToken(email, setEmailSent) {
 
 export function resetPassword(password, confirmPassword, token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "reset-password" })
     dispatch(setLoading(true))
     try {
       const response = await apiconnector("POST", RESETPASSWORD_API, {
