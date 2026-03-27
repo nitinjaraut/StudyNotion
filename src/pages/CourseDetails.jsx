@@ -327,7 +327,7 @@ function CourseDetails() {
   }
 
   const {
-    _id: course_id,
+    _id: _course_id,
     courseName = "",
     courseDescription = "",
     thumbnail = "",
