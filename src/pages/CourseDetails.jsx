@@ -327,7 +327,8 @@ function CourseDetails() {
   }
 
   const {
-    _id: _course_id,
+    // eslint-disable-next-line no-unused-vars
+    _id,
     courseName = "",
     courseDescription = "",
     thumbnail = "",

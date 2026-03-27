@@ -30,6 +30,7 @@ export default function Instructor() {
       }
       setLoading(false)
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const totalAmount = instructorData?.reduce(
