@@ -84,9 +84,9 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                   </span> */}
                   <span
                     className={`${
-                      activeStatus === course?.sectionName
-                        ? "rotate-0"
-                        : "rotate-180"
+                      activeStatus === course?._id
+                        ? "rotate-180"
+                        : "rotate-0"
                     } transition-all duration-500`}
                   >
                     <BsChevronDown />
