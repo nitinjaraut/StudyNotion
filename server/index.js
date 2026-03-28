@@ -25,8 +25,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: "*",
+		origin: (process.env.CORS_ORIGIN || "http://localhost:3000").split(","),
 		credentials: true,
+		maxAge: 14400,
 	})
 );
 app.use(
