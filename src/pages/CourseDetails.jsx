@@ -369,7 +369,7 @@ function CourseDetails() {
     <>
       <div className="relative w-full bg-richblack-800">
         <div className="mx-auto box-content px-4 lg:w-[1260px]">
-          <div className="grid min-h-[450px] max-w-maxContentTab py-8 xl:max-w-[810px]">
+          <div className="grid min-h-[450px] max-w-maxContentTab py-8 lg:max-w-[810px]">
             <div className="lg:hidden">
               <img src={thumbnail} alt="course thumbnail" className="w-full" />
             </div>
@@ -408,7 +408,7 @@ function CourseDetails() {
             </div>
           </div>
 
-          <div className="hidden lg:block absolute right-4 top-24 w-[410px]">
+          <div className="hidden lg:block absolute right-[1rem] top-[60px] w-1/3 max-w-[410px]">
             <CourseDetailsCard
               course={response.data.courseDetails}
               handleBuyCourse={handleBuyCourse}
@@ -419,7 +419,7 @@ function CourseDetails() {
       </div>
 
       <div className="mx-auto px-4 lg:w-[1260px] text-richblack-5">
-        <div className="xl:max-w-[810px]">
+        <div className="lg:max-w-[810px]">
           <div className="my-8 border p-8">
             <p className="text-3xl font-semibold">What you'll learn</p>
             <ReactMarkdown>{whatYouWillLearn}</ReactMarkdown>
