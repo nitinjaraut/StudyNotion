@@ -11,8 +11,7 @@ const mongoose = require("mongoose")
 
 
 exports.capturePayment = async (req, res) => {
-  try {
-    const { courses } = req.body
+  try {const { courses } = req.body
     const userId = req.user.id
 
     if (!Array.isArray(courses) || courses.length === 0) {
