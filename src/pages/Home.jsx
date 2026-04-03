@@ -22,7 +22,7 @@ function Home() {
   return (
     <div>
       {/* Section 1 */}
-      <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
+      <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 pt-16 text-white">
         {/* Become a Instructor Button */}
         {!token && (
           <Link to={"/signup"}>
