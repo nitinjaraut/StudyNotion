@@ -27,13 +27,15 @@ export default function RenderSteps() {
  
   return (
     <>
-      {/* Step Circles + Connecting Lines */}
-      <div className="relative mb-2 flex w-full justify-center items-center">
-        {steps.map((item) => (
-          <div key={item.id} className="flex items-center w-full">
-            
-            {/* Step Circle */}
-            <div className="flex flex-col items-center">
+      {/* Steps: Circles, Labels, and Connecting Lines */}
+      <div className="relative mb-16 flex w-full select-none items-start">
+        {steps.map((item, idx) => (
+          <>
+            {/* Step: Circle + Label */}
+            <div
+              key={item.id}
+              className="flex flex-col items-center gap-y-2"
+            >
               <button
                 className={`grid cursor-default aspect-square w-[34px] place-items-center rounded-full border-[1px]
                   ${
@@ -50,41 +52,29 @@ export default function RenderSteps() {
                   item.id
                 )}
               </button>
+              <p
+                className={`text-sm whitespace-nowrap ${
+                  step >= item.id
+                    ? "text-richblack-5"
+                    : "text-richblack-500"
+                }`}
+              >
+                {item.title}
+              </p>
             </div>
 
-            {/* Connecting Line */}
-            {item.id !== steps.length && (
+            {/* Connecting line (between circles, not after the last one) */}
+            {idx < steps.length - 1 && (
               <div
-                className={`h-[calc(34px/2)] flex-1 border-dashed border-b-2
-                  ${
-                    step > item.id
-                      ? "border-yellow-50"
-                      : "border-richblack-500"
-                  }
-                `}
+                key={`line-${item.id}`}
+                className={`mt-[17px] flex-1 border-dashed border-b-2 ${
+                  step > item.id
+                    ? "border-yellow-50"
+                    : "border-richblack-500"
+                }`}
               />
             )}
-          </div>
-        ))}
-      </div>
-
-      {/* Step Titles */}
-      <div className="relative mb-16 flex w-full select-none justify-between">
-        {steps.map((item) => (
-          <div
-            key={item.id}
-            className="flex min-w-[130px] flex-col items-center gap-y-2"
-          >
-            <p
-              className={`text-sm ${
-                step >= item.id
-                  ? "text-richblack-5"
-                  : "text-richblack-500"
-              }`}
-            >
-              {item.title}
-            </p>
-          </div>
+          </>
         ))}
       </div>
 
