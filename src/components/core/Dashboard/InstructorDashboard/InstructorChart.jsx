@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Chart, registerables } from "chart.js"
 import { Pie } from "react-chartjs-2"
 
@@ -8,17 +8,15 @@ export default function InstructorChart({ courses }) {
   // State to keep track of the currently selected chart
   const [currChart, setCurrChart] = useState("students")
 
-  // Function to generate random colors for the chart
-  const generateRandomColors = (numColors) => {
-    const colors = []
-    for (let i = 0; i < numColors; i++) {
-      const color = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
-        Math.random() * 256
-      )}, ${Math.floor(Math.random() * 256)})`
-      colors.push(color)
-    }
-    return colors
-  }
+  // Generate N visually distinct, consistent colors using the golden-angle
+  // method on the HSL color wheel — works for any number of courses
+  const chartColors = useMemo(() => {
+    const GOLDEN_ANGLE = 137.508 // degrees — maximises hue separation
+    return courses.map((_, i) => {
+      const hue = (i * GOLDEN_ANGLE) % 360
+      return `hsl(${hue}, 70%, 55%)`
+    })
+  }, [courses])
 
   // Data for the chart displaying student information
   const chartDataStudents = {
@@ -26,7 +24,7 @@ export default function InstructorChart({ courses }) {
     datasets: [
       {
         data: courses.map((course) => course.totalStudentsEnrolled),
-        backgroundColor: generateRandomColors(courses.length),
+        backgroundColor: chartColors,
       },
     ],
   }
@@ -37,7 +35,7 @@ export default function InstructorChart({ courses }) {
     datasets: [
       {
         data: courses.map((course) => course.totalAmountGenerated),
-        backgroundColor: generateRandomColors(courses.length),
+        backgroundColor: chartColors,
       },
     ],
   }
