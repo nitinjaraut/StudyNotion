@@ -800,9 +800,24 @@ exports.getInstructorCourses = async (req, res) => {
       })
     }
 
-    const courses = await Course.find({ instructor: user._id }).sort({
-      createdAt: -1,
-    })
+    const courses = await Course.find({ instructor: user._id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .lean()
+
+    // Compute totalDuration for each course
+    for (const course of courses) {
+      let totalSeconds = 0
+      course.courseContent?.forEach((section) =>
+        section.subSection?.forEach((sub) => {
+          totalSeconds += Number(sub.timeDuration || 0)
+        })
+      )
+      course.totalDuration = convertSecondsToDuration(totalSeconds)
+    }
 
     return res.status(200).json({ success: true, data: courses })
   } catch (error) {
