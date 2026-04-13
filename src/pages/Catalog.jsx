@@ -3,15 +3,15 @@
 // import { useParams } from 'react-router-dom'
 // import { apiconnector } from '../services/apiconnector';
 // import { categories } from '../services/apis';
-// import { getCatalogaPageData } from '../services/operations/pageAndComponentData';
+// import { getaPageData } from '../services/operations/pageAndComponentData';
 // import Course_Card from '../components/core/Catalog/Course_Card';
 // import CourseSlider from '../components/core/Catalog/CourseSlider';
 // import { useSelector } from "react-redux"
 // import Error from "./Error"
-// const Catalog = () => {
+// const  = () => {
 //      const { loading } = useSelector((state) => state.profile)
-//     const {catalogName} = useParams();
-//     const [catalogPageData, setCatalogPageData] = useState(null);
+//     const {Name} = useParams();
+//     const [PageData, setPageData] = useState(null);
 //     const [categoryId, setCategoryId] = useState("");
 //     const [active, setActive] = useState(1)
 //     //Fetch all categories
@@ -19,18 +19,18 @@
 //         const getCategories = async() => {
 //             const res = await apiconnector("GET", categories.CATEGORIES_API);
 //             const category_id = 
-//             res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0]._id;
+//             res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === Name)[0]._id;
 //             setCategoryId(category_id);
 //         }
 //         getCategories();
-//     },[catalogName]);
+//     },[Name]);
 
 //     useEffect(() => {
 //         const getCategoryDetails = async() => {
 //             try{
-//                 const res = await getCatalogaPageData(categoryId);
+//                 const res = await getaPageData(categoryId);
 //                 console.log("PRinting res: ", res);
-//                 setCatalogPageData(res);
+//                 setPageData(res);
 //             }
 //             catch(error) {
 //                 console.log(error)
@@ -42,14 +42,14 @@
         
 //     },[categoryId]);
 
-//     if (loading || !catalogPageData) {
+//     if (loading || !PageData) {
 //         return (
 //           <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
 //             <div className="spinner"></div>
 //           </div>
 //         )
 //     }
-//     if(!loading && !catalogPageData.success) {
+//     if(!loading && !PageData.success) {
 //         return <Error />
 //     }
 //   return (
@@ -58,16 +58,16 @@
 //           <div className=" box-content bg-richblack-800 px-4">
 //             <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
 //               <p className="text-sm text-richblack-300">
-//                 {`Home / Catalog / `}
+//                 {`Home /  / `}
 //                 <span className="text-yellow-25">
-//                   {catalogPageData?.data?.selectedCategory?.name}
+//                   {PageData?.data?.selectedCategory?.name}
 //                 </span>
 //               </p>
 //               <p className="text-3xl text-richblack-5">
-//                 {catalogPageData?.data?.selectedCategory?.name}
+//                 {PageData?.data?.selectedCategory?.name}
 //               </p>
 //               <p className="max-w-[870px] text-richblack-200">
-//                 {catalogPageData?.data?.selectedCategory?.description}
+//                 {PageData?.data?.selectedCategory?.description}
 //               </p>
 //             </div>
 //           </div>
@@ -99,18 +99,18 @@
 //             </div>
 //             <div>
 //               <CourseSlider
-//                 Courses={catalogPageData?.data?.selectedCategory?.courses}
+//                 Courses={PageData?.data?.selectedCategory?.courses}
 //               />
 //             </div>
 //           </div>
 //           {/* Section 2 */}
 //           <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
 //             <div className="section_heading">
-//               Top courses in {catalogPageData?.data?.differentCategory?.name}
+//               Top courses in {PageData?.data?.differentCategory?.name}
 //             </div>
 //             <div className="py-8">
 //               <CourseSlider
-//                 Courses={catalogPageData?.data?.differentCategory?.courses}
+//                 Courses={PageData?.data?.differentCategory?.courses}
 //               />
 //             </div>
 //           </div>
@@ -120,7 +120,7 @@
 //             <div className="section_heading">Frequently Bought</div>
 //             <div className="py-8">
 //               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-//                 {catalogPageData?.data?.mostSellingCourses
+//                 {PageData?.data?.mostSellingCourses
 //                   ?.slice(0, 4)
 //                   .map((course, i) => (
 //                     <Course_Card course={course} key={i} Height={"h-[400px]"} />
@@ -134,16 +134,16 @@
 //       )
 //     }
     
-//     export default Catalog
+//     export default 
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 
-// import CourseCard from "../components/Catalog/CourseCard"
-// import CourseSlider from "../components/Catalog/CourseSlider"
+// import CourseCard from "../components//CourseCard"
+// import CourseSlider from "../components//CourseSlider"
 import Footer from "../components/common/Footer"
-import CourseCard from "../components/core/Catalog/Course_Card"
-import CourseSlider from "../components/core/Catalog/CourseSlider"
+import Course_Card from '../components/core/Catalog/Course_Card';
+import CourseSlider from '../components/core/Catalog/CourseSlider';
 import { apiconnector } from "../services/apiconnector"
 import { categories } from "../services/apis"
 import { getCatalogPageData } from "../services/operations/pageAndComponntDatas"
@@ -153,8 +153,9 @@ function Catalog() {
   const { loading } = useSelector((state) => state.profile)
   const { catalogName } = useParams()
   const [active, setActive] = useState(1)
-  const [catalogPageData, setCatalogPageData] = useState(null)
+  const [PageData, setPageData] = useState(null)
   const [categoryId, setCategoryId] = useState("")
+
   // Fetch All Categories
   useEffect(() => {
     ;(async () => {
@@ -162,8 +163,13 @@ function Catalog() {
         const res = await apiconnector("GET", categories.CATEGORIES_API)
         const category_id = res?.data?.data?.filter(
           (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
-        )[0]._id
-        setCategoryId(category_id)
+        )[0]?._id;
+        
+        if (category_id) {
+          setCategoryId(category_id)
+        } else {
+          console.log("Could not find matching Category.")
+        }
       } catch (error) {
         console.log("Could not fetch Categories.", error)
       }
@@ -174,7 +180,7 @@ function Catalog() {
       ;(async () => {
         try {
           const res = await getCatalogPageData(categoryId)
-          setCatalogPageData(res)
+          setPageData(res)
         } catch (error) {
           console.log(error)
         }
@@ -182,14 +188,14 @@ function Catalog() {
     }
   }, [categoryId])
 
-  if (loading || !catalogPageData) {
+  if (loading || !PageData) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
     )
   }
-  if (!loading && !catalogPageData.success) {
+  if (!loading && !PageData.success) {
     return <Error />
   }
 
@@ -199,16 +205,16 @@ function Catalog() {
       <div className=" box-content bg-richblack-800 px-4">
         <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
           <p className="text-sm text-richblack-300">
-            {`Home / Catalog / `}
+            {`Home /  / `}
             <span className="text-yellow-25">
-              {catalogPageData?.data?.selectedCategory?.name}
+              {PageData?.data?.selectedCategory?.name}
             </span>
           </p>
           <p className="text-3xl text-richblack-5">
-            {catalogPageData?.data?.selectedCategory?.name}
+            {PageData?.data?.selectedCategory?.name}
           </p>
           <p className="max-w-[870px] text-richblack-200">
-            {catalogPageData?.data?.selectedCategory?.description}
+            {PageData?.data?.selectedCategory?.description}
           </p>
         </div>
       </div>
@@ -240,18 +246,18 @@ function Catalog() {
         </div>
         <div>
           <CourseSlider
-            Courses={catalogPageData?.data?.selectedCategory?.courses}
+            Courses={PageData?.data?.selectedCategory?.courses}
           />
         </div>
       </div>
       {/* Section 2 */}
       <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
         <div className="section_heading">
-          Top courses in {catalogPageData?.data?.differentCategory?.name}
+          Top courses in {PageData?.data?.differentCategory?.name}
         </div>
         <div className="py-8">
           <CourseSlider
-            Courses={catalogPageData?.data?.differentCategory?.courses}
+            Courses={PageData?.data?.differentCategory?.courses}
           />
         </div>
       </div>
@@ -261,10 +267,10 @@ function Catalog() {
         <div className="section_heading">Frequently Bought</div>
         <div className="py-8">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {catalogPageData?.data?.mostSellingCourses
+            {PageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, i) => (
-                <CourseCard course={course} key={i} Height={"h-[400px]"} />
+                <Course_Card course={course} key={i} Height={"h-[400px]"} />
               ))}
           </div>
         </div>

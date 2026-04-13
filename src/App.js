@@ -19,7 +19,7 @@
 // import Settings from "./components/core/Dashboard/Settings"
 // import VideoDetails from "./components/core/ViewCourse/VideoDetails"
 // import About from "./pages/About"
-// import Catalog from "./pages/Catalog"
+// import  from "./pages/Catalog"
 // import Contact from "./pages/Contact"
 // import CourseDetails from "./pages/CourseDetails"
 // import Dashboard from "./pages/Dashboard"
