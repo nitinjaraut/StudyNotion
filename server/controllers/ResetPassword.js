@@ -10,6 +10,8 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+
 // part 1: - RESETPASSWORD TOKEN
 exports.resetPasswordToken = async (req, res) => {
 	try {
@@ -140,6 +142,17 @@ exports.resetPassword = async (req, res) => {
       { password: encryptedPassword },
       { new: true }
     )
+
+    try {
+      await mailSender(
+        userDetails.email,
+        "Password Updated Successfully",
+        passwordUpdated(userDetails.email, userDetails.firstName)
+      );
+    } catch (error) {
+      console.error("Error sending password update confirmation email:", error);
+    }
+
     res.json({
       success: true,
       message: `Password Reset Successful`,
