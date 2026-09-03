@@ -582,6 +582,10 @@ exports.editCourse = async (req, res) => {
       course.thumbnail = thumbnailImage.secure_url
     }
 
+    // Handle category change — sync Category.courses arrays
+    const oldCategoryId = course.category?.toString()
+    const newCategoryId = req.body.category
+
     const allowedFields = [
       "courseName",
       "courseDescription",
@@ -603,6 +607,22 @@ exports.editCourse = async (req, res) => {
     }
 
     await course.save()
+
+    // If category was changed, update both old and new Category documents
+    if (newCategoryId && newCategoryId !== oldCategoryId) {
+      const mongoose = require("mongoose")
+      const courseObjectId = new mongoose.Types.ObjectId(courseId)
+      // Remove course from old category
+      if (oldCategoryId) {
+        await Category.findByIdAndUpdate(oldCategoryId, {
+          $pull: { courses: courseObjectId },
+        })
+      }
+      // Add course to new category
+      await Category.findByIdAndUpdate(newCategoryId, {
+        $addToSet: { courses: courseObjectId },
+      })
+    }
 
     const updatedCourse = await Course.findById(courseId)
       .populate("instructor")

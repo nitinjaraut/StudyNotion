@@ -50,7 +50,7 @@ export default function CourseInformationForm() {
       setValue("coursePrice", course.price)
       setValue("courseTags", course.tag)
       setValue("courseBenefits", course.whatYouWillLearn)
-      setValue("courseCategory", course.category)
+      setValue("courseCategory", course.category._id || course.category)
       setValue("courseRequirements", course.instructions)
       setValue("courseImage", course.thumbnail)
     }
@@ -68,7 +68,7 @@ export default function CourseInformationForm() {
       currentValues.coursePrice !== course.price ||
       currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.category._id ||
+      currentValues.courseCategory !== (course.category._id || course.category) ||
       currentValues.courseRequirements.toString() !==
         course.instructions.toString() ||
       currentValues.courseImage !== course.thumbnail
@@ -107,7 +107,7 @@ export default function CourseInformationForm() {
         if (currentValues.courseBenefits !== course.whatYouWillLearn) {
           formData.append("whatYouWillLearn", data.courseBenefits)
         }
-        if (currentValues.courseCategory._id !== course.category._id) {
+        if (currentValues.courseCategory !== (course.category._id || course.category)) {
           formData.append("category", data.courseCategory)
         }
         if (
