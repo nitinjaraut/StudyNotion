@@ -108,7 +108,7 @@ export default function Instructor() {
                   <img
                     src={course.thumbnail}
                     alt={course.courseName}
-                    className="h-[201px] w-full rounded-md object-cover"
+                    className="h-[201px] w-full rounded-md object-contain"
                   />
                   <div className="mt-3 w-full">
                     <p className="text-sm font-medium text-richblack-50">

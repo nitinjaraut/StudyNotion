@@ -171,7 +171,7 @@ const VideoDetails = () => {
         <img
           src={previewSource}
           alt="Preview"
-          className="h-full w-full rounded-md object-cover"
+          className="h-full w-full rounded-md object-contain"
         />
       ) : (
         <Player
