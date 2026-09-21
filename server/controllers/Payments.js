@@ -45,14 +45,13 @@ exports.capturePayment = async (req, res) => {
         })
       }
 
-      // ✅ FIXED FIELD NAME
+      //  FIXED FIELD NAME
       if (course.studentsEnrolled.includes(userId)) {
         return res.status(400).json({
           success: false,
           message: "Already enrolled in this course",
         })
       }
-
       total_amount += Number(course.price)
     }
 
@@ -174,7 +173,7 @@ const enrollStudents = async (courses, userId) => {
       throw new Error("Course not found")
     }
 
-    // ✅ Prevent duplicate push
+    //  Prevent duplicate push
     if (!enrolledCourse.studentsEnrolled.includes(userId)) {
       enrolledCourse.studentsEnrolled.push(userId)
       await enrolledCourse.save()
@@ -186,20 +185,22 @@ const enrollStudents = async (courses, userId) => {
       completedVideos: [],
     })
 
-    await User.findByIdAndUpdate(userId, {
+    const enrolledStudent = await User.findByIdAndUpdate(userId, {
       $addToSet: {
         courses: courseId,
         courseProgress: courseProgress._id,
       },
-    }) 
+    }, { new: true }) 
 
-    await mailSender(
-      enrolledCourse.instructor.email,
-      `Successfully Enrolled`,
-      courseEnrollmentEmail(
-        enrolledCourse.courseName,
-        enrolledCourse.instructor.firstName
+    if (enrolledStudent) {
+      await mailSender(
+        enrolledStudent.email,
+        `Successfully Enrolled into ${enrolledCourse.courseName}`,
+        courseEnrollmentEmail(
+          enrolledCourse.courseName,
+          enrolledStudent.firstName
+        )
       )
-    )
+    }
   }
 }

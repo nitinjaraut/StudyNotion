@@ -118,10 +118,13 @@ exports.categoryPageDetails = async (req, res) => {
       })
       .exec()
     const allCourses = allCategories.flatMap((category) => category.courses)
+    // --------------- we don't have sold in our schema ---------------------
+    // const mostSellingCourses = allCourses
+    //   .sort((a, b) => b.sold - a.sold)
+    //   .slice(0, 10)
     const mostSellingCourses = allCourses
-      .sort((a, b) => b.sold - a.sold)
-      .slice(0, 10)
-
+    .sort((a, b) => b.studentsEnrolled.length - a.studentsEnrolled.length)
+    .slice(0, 10)
     res.status(200).json({
       success: true,
       data: {

@@ -23,7 +23,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
     instructions = [],
   } = course || {}
 
-  // ✅ NORMALIZE ARRAYS (CRITICAL)
+  //  NORMALIZE ARRAYS (CRITICAL)
   const studentsEnrolled = Array.isArray(course?.studentsEnrolled)
     ? course.studentsEnrolled
     : []

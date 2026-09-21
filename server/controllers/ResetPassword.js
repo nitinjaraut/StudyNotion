@@ -138,8 +138,12 @@ exports.resetPassword = async (req, res) => {
     }
     const encryptedPassword = await bcrypt.hash(password, 10)
     await User.findOneAndUpdate(
-      { token: token },
-      { password: encryptedPassword },
+      { token: token }, // Find the user BY this token
+      { 
+        password: encryptedPassword,
+        token: "", // Clear the token so it can't be used again
+        resetPasswordExpires: Date.now() // Expire it immediately
+      },
       { new: true }
     )
 
